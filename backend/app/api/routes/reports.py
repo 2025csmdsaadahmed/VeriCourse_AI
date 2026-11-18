@@ -59,20 +59,18 @@ def create_report(
         )
 
 
-# Get all reports belonging to a course
+# Get all reports belonging to a course (Publicly accessible for course report audit view)
 @router.get(
     "/courses/{course_id}/reports/",
     response_model=list[ReportResponse]
 )
 def get_course_reports(
     course_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db)
 ):
 
     course = db.query(Course).filter(
-        Course.id == course_id,
-        Course.submitted_by == current_user.id
+        Course.id == course_id
     ).first()
 
     if not course:

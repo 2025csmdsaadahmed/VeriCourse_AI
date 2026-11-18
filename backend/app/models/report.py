@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -26,6 +26,16 @@ class Report(Base):
         String(30),
         default="undetermined",
         nullable=False
+    )
+
+    credibility_score = Column(
+        Float,
+        nullable=True
+    )
+
+    evidence_coverage = Column(
+        Float,
+        nullable=True
     )
 
     summary = Column(Text, nullable=True)

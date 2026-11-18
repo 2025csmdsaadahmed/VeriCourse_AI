@@ -4,9 +4,9 @@ from jose import jwt
 from passlib.context import CryptContext
 import os
 
-# Password hashing
+# Password hashing supporting both argon2 and bcrypt
 pwd_context = CryptContext(
-    schemes=["bcrypt"],
+    schemes=["argon2", "bcrypt"],
     deprecated="auto"
 )
 

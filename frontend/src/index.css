@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F7F5EF;
+    color: #252B29;
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Elegant Warm Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EFECE1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CFC9BA;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B5AD9B;
+}
+
+/* Organic Warm Surfaces */
+.organic-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E3DDD0;
+  box-shadow: 0 4px 20px -2px rgba(37, 43, 41, 0.05);
+  border-radius: 1.25rem;
+}
+
+.organic-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.organic-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: #CBC2B2;
+  box-shadow: 0 12px 32px -4px rgba(37, 43, 41, 0.09);
+}
+
+.glass-nav {
+  background: rgba(247, 245, 239, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #E3DDD0;
+}
+
+/* Subtle dot grid pattern for elevated editorial feel */
+.bg-grid-pattern {
+  background-image: radial-gradient(#174C3C 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
+}

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import Optional
 
@@ -18,8 +18,10 @@ class ReportResponse(BaseModel):
     course_id: int
     overall_status: str
     risk_level: str
+    credibility_score: Optional[float] = None
+    evidence_coverage: Optional[float] = None
     summary: Optional[str] = None
     recommendations: Optional[str] = None
     generated_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)

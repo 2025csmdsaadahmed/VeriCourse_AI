@@ -19,3 +19,5 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     courses = relationship("Course", back_populates="owner")
+    experiences = relationship("StudentExperience", back_populates="user")
+    saved_courses = relationship("SavedCourse", back_populates="user")

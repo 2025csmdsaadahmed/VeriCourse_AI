@@ -7,6 +7,9 @@ from app.api.routes.courses import router as courses_router
 from app.api.routes.claims import router as claims_router
 from app.api.routes.evidence import router as evidence_router
 from app.api.routes.reports import router as reports_router
+from app.api.routes.experiences import router as experiences_router
+from app.api.routes.saved_courses import router as saved_courses_router
+from app.api.routes.admin import router as admin_router
 
 app = FastAPI(
     title="VeriCourse AI",
@@ -19,7 +22,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173"
+        "http://127.0.0.1:5173",
+        "http://192.168.1.3:5173",
+        "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -52,6 +57,21 @@ app.include_router(
     reports_router,
     prefix="/api",
     tags=["Reports"]
+)
+app.include_router(
+    experiences_router,
+    prefix="/api",
+    tags=["Student Experiences"]
+)
+app.include_router(
+    saved_courses_router,
+    prefix="/api",
+    tags=["Saved Courses"]
+)
+app.include_router(
+    admin_router,
+    prefix="/api",
+    tags=["Admin"]
 )
 @app.get("/")
 def root():

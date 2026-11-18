@@ -15,6 +15,8 @@ class Course(Base):
     course_url = Column(String(500), nullable=True)
     description = Column(Text, nullable=True)
     fee = Column(Float, nullable=True)
+    category = Column(String(100), default="General", nullable=True)
+    duration = Column(String(50), nullable=True)
 
     submitted_by = Column(Integer, ForeignKey("users.id"), nullable=False)
 
@@ -23,3 +25,5 @@ class Course(Base):
     owner = relationship("User", back_populates="courses")
     claims = relationship("Claim", back_populates="course")
     reports = relationship("Report", back_populates="course")
+    student_experiences = relationship("StudentExperience", back_populates="course", cascade="all, delete-orphan")
+    saved_by_users = relationship("SavedCourse", back_populates="course", cascade="all, delete-orphan")
