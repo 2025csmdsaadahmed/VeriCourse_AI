@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vericourse_secure_pass}
       POSTGRES_DB: ${POSTGRES_DB:-vericourse_db}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -30,11 +30,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    env_file:
+      - ./backend/.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-vericourse_user}:${POSTGRES_PASSWORD:-vericourse_secure_pass}@db:5432/${POSTGRES_DB:-vericourse_db}
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      JWT_SECRET: ${JWT_SECRET:-vericourse_production_secret_key_minimum_32_characters}
-      ACCESS_TOKEN_EXPIRE_MINUTES: 60
       ENVIRONMENT: production
     ports:
       - "8000:8000"
