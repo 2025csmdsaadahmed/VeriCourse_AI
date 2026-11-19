@@ -61,21 +61,19 @@ def create_evidence(
         )
 
 
-# Get all evidence belonging to a claim
+# Get all evidence belonging to a claim (Publicly accessible for course report audit view)
 @router.get(
     "/claims/{claim_id}/evidence/",
     response_model=list[EvidenceResponse]
 )
 def get_claim_evidence(
     claim_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db)
 ):
 
-    # Verify claim ownership through its course
-    claim = db.query(Claim).join(Course).filter(
-        Claim.id == claim_id,
-        Course.submitted_by == current_user.id
+    # Verify claim exists
+    claim = db.query(Claim).filter(
+        Claim.id == claim_id
     ).first()
 
     if not claim:

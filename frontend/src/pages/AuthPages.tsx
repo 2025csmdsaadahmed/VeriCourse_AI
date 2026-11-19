@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
-import { ShieldCheck, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,8 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const successMessage = (location.state as any)?.message;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +69,13 @@ export const LoginPage: React.FC = () => {
           <h2 className="text-2xl font-extrabold text-forest-900 tracking-tight">Welcome Back</h2>
           <p className="text-xs text-warm-muted mt-1">Sign in to your student intelligence workspace</p>
         </div>
+
+        {successMessage && (
+          <div className="mb-6 p-3.5 rounded-xl bg-forest-50 border border-forest-200 text-forest-800 text-xs flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-forest-600 shrink-0" />
+            <span>{successMessage}</span>
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 p-3.5 rounded-xl bg-terracotta-light border border-terracotta/20 text-terracotta-dark text-xs flex items-center gap-2">
@@ -170,9 +179,8 @@ export const RegisterPage: React.FC = () => {
 
     try {
       await api.post('/auth/register', { full_name: fullName, email, password });
-      const res = await api.post('/auth/login', { email, password });
-      login(res.data.access_token, res.data.user);
-      navigate('/dashboard');
+      // Redirect to sign in page upon successful account registration
+      navigate('/login', { state: { message: 'Account created successfully! Please sign in with your credentials.' } });
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed');
     } finally {
