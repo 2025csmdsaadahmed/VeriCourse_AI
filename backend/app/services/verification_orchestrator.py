@@ -117,67 +117,77 @@ class VerificationOrchestrator:
                 claim_results = []
 
                 # STEP 3: Verify evidence using Agent 2.
+                # If student supplied manual sources, verify them:
+                if claim_evidence:
+                    for evidence_data in claim_evidence:
+                        result = evidence_verification_agent.verify_evidence(
+                            claim_text=claim_data["claim_text"],
+                            source_name=evidence_data.get("source_name", ""),
+                            source_url=evidence_data.get("source_url", ""),
+                            evidence_description=evidence_data.get(
+                                "evidence_description", ""
+                            )
+                        )
+                        metadata = result.get("retrieval_metadata") or {}
+                        fetched_at = metadata.get("fetched_at")
+                        if fetched_at:
+                            fetched_at = datetime.fromisoformat(
+                                fetched_at.replace("Z", "+00:00")
+                            )
 
-                for evidence_data in claim_evidence:
+                        db_evidence = Evidence(
+                            claim_id=db_claim.id,
+                            source_name=evidence_data.get("source_name", "Unknown source"),
+                            source_url=evidence_data.get("source_url"),
+                            evidence_description=evidence_data.get("evidence_description"),
+                            evidence_status=result["verification_status"],
+                            source_credibility=result["source_credibility"],
+                            evidence_relevance=result["evidence_relevance"],
+                            verification_explanation=result["explanation"],
+                            verification_limitations=result["limitations"],
+                            page_title=metadata.get("page_title"),
+                            content_hash=metadata.get("content_hash"),
+                            fetched_at=fetched_at
+                        )
+                        db.add(db_evidence)
+                        db.flush()
 
-                    result = evidence_verification_agent.verify_evidence(
+                        result["claim_index"] = claim_index
+                        result["claim_id"] = db_claim.id
+                        result["evidence_id"] = db_evidence.id
+                        result["claim_text"] = claim_data["claim_text"]
+                        claim_results.append(result)
+                        all_evidence_results.append(result)
+                else:
+                    # Automated Agent 2 Corroboration: Auto-discover public evidence for the claim
+                    auto_ev = evidence_verification_agent.auto_discover_evidence(
                         claim_text=claim_data["claim_text"],
-                        source_name=evidence_data.get("source_name", ""),
-                        source_url=evidence_data.get("source_url", ""),
-                        evidence_description=evidence_data.get(
-                            "evidence_description", ""
-                        )
+                        claim_category=claim_data.get("claim_category", "general"),
+                        provider=""
                     )
-
-                    metadata = result.get("retrieval_metadata") or {}
-
-                    fetched_at = metadata.get("fetched_at")
-
-                    if fetched_at:
-                        fetched_at = datetime.fromisoformat(
-                            fetched_at.replace("Z", "+00:00")
-                        )
-
                     db_evidence = Evidence(
                         claim_id=db_claim.id,
-
-                        source_name=evidence_data.get(
-                            "source_name", "Unknown source"
-                        ),
-
-                        source_url=evidence_data.get("source_url"),
-
-                        evidence_description=evidence_data.get(
-                            "evidence_description"
-                        ),
-
-                        evidence_status=result["verification_status"],
-
-                        source_credibility=result["source_credibility"],
-
-                        evidence_relevance=result["evidence_relevance"],
-
-                        verification_explanation=result["explanation"],
-
-                        verification_limitations=result["limitations"],
-
-                        page_title=metadata.get("page_title"),
-
-                        content_hash=metadata.get("content_hash"),
-
-                        fetched_at=fetched_at
+                        source_name=auto_ev.get("source_name", "Industry Benchmark Registry"),
+                        source_url=auto_ev.get("source_url"),
+                        evidence_description=auto_ev.get("evidence_description"),
+                        evidence_status=auto_ev["verification_status"],
+                        source_credibility=auto_ev["source_credibility"],
+                        evidence_relevance=auto_ev["evidence_relevance"],
+                        verification_explanation=auto_ev["explanation"],
+                        verification_limitations=auto_ev["limitations"],
+                        page_title=auto_ev.get("source_name"),
+                        content_hash="automated-agent2-corroboration",
+                        fetched_at=datetime.utcnow()
                     )
-
                     db.add(db_evidence)
                     db.flush()
 
-                    result["claim_index"] = claim_index
-                    result["claim_id"] = db_claim.id
-                    result["evidence_id"] = db_evidence.id
-                    result["claim_text"] = claim_data["claim_text"]
-
-                    claim_results.append(result)
-                    all_evidence_results.append(result)
+                    auto_ev["claim_index"] = claim_index
+                    auto_ev["claim_id"] = db_claim.id
+                    auto_ev["evidence_id"] = db_evidence.id
+                    auto_ev["claim_text"] = claim_data["claim_text"]
+                    claim_results.append(auto_ev)
+                    all_evidence_results.append(auto_ev)
 
                 # STEP 4: Update claim verification status.
 
