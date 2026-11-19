@@ -364,7 +364,7 @@ def verify_course(
 
         return result
 
-    except RuntimeError:
+    except Exception as exc:
         logging.exception(
             "Verification failed for course ID: %s",
             course_id
@@ -372,5 +372,5 @@ def verify_course(
 
         raise HTTPException(
             status_code=500,
-            detail="Course verification failed. Check backend terminal logs."
+            detail=f"Verification failed: {type(exc).__name__} - {str(exc)}"
         )
