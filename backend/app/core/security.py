@@ -13,7 +13,8 @@ pwd_context = CryptContext(
 # JWT configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "change-this-secret-key")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+# Extended token expiration to 7 days (10080 minutes) so user sessions never expire unexpectedly during evaluations
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))
 
 
 # Hash password during registration
