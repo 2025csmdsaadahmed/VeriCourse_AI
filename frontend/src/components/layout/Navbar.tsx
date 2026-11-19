@@ -27,24 +27,24 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-4">
         
         {/* Brand Logo - Crisp, prominent and uncompressed */}
         <Link to="/" className="flex items-center shrink-0 group">
           <img
             src="/assets/vericourse-logo.png"
             alt="VeriCourse AI - Education • Trust • Verification"
-            className="h-14 sm:h-16 w-auto object-contain rounded-xl drop-shadow-md group-hover:scale-[1.03] transition-transform duration-300"
+            className="h-14 sm:h-16 md:h-18 w-auto object-contain rounded-xl drop-shadow-md group-hover:scale-[1.03] transition-transform duration-300"
           />
         </Link>
 
         {/* Desktop Navigation Links */}
         {/* Exact Order: 1. HOME 2. HOW IT WORKS 3. EXPLORE COURSES 4. INVESTIGATE COURSE 5. COMPARE 6. STUDENT EXPERIENCES 7. ABOUT */}
-        <div className="hidden xl:flex items-center gap-5 2xl:gap-7">
+        <div className="hidden xl:flex items-center gap-6 2xl:gap-8">
           {/* 1. HOME */}
           <Link
             to="/"
-            className={`text-sm font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
+            className={`text-sm 2xl:text-base font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
               isActive('/') ? 'text-forest-900 border-b-2 border-forest-800 pb-1' : 'text-warm-charcoal/80 hover:text-forest-800'
             }`}
           >
@@ -54,7 +54,7 @@ export const Navbar: React.FC = () => {
           {/* 2. HOW IT WORKS */}
           <button
             onClick={() => scrollToSection('how-it-works')}
-            className="text-sm font-extrabold tracking-wide text-warm-charcoal/80 hover:text-forest-800 transition-colors uppercase whitespace-nowrap cursor-pointer"
+            className="text-sm 2xl:text-base font-extrabold tracking-wide text-warm-charcoal/80 hover:text-forest-800 transition-colors uppercase whitespace-nowrap cursor-pointer"
           >
             How It Works
           </button>
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
           {/* 3. EXPLORE COURSES */}
           <Link
             to="/discover"
-            className={`text-sm font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap flex items-center gap-1.5 ${
+            className={`text-sm 2xl:text-base font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap flex items-center gap-1.5 ${
               isActive('/discover') ? 'text-forest-900 border-b-2 border-forest-800 pb-1' : 'text-warm-charcoal/80 hover:text-forest-800'
             }`}
           >
@@ -72,20 +72,20 @@ export const Navbar: React.FC = () => {
           {/* 4. INVESTIGATE COURSE - Primary button treatment positioned between Explore and Compare */}
           <Link
             to="/verify"
-            className={`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wider uppercase transition-all flex items-center gap-1.5 whitespace-nowrap shadow-forest-sm transform hover:-translate-y-0.5 ${
+            className={`h-11 px-5 rounded-xl text-xs 2xl:text-sm font-extrabold tracking-wider uppercase transition-all flex items-center gap-2 whitespace-nowrap shadow-forest-sm transform hover:-translate-y-0.5 ${
               isActive('/verify')
                 ? 'bg-forest-800 text-white ring-2 ring-forest-500'
                 : 'bg-forest-900 hover:bg-forest-800 text-white'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-gold" />
+            <Sparkles className="w-4 h-4 text-amber-gold" />
             Investigate Course
           </Link>
 
           {/* 5. COMPARE */}
           <Link
             to="/compare"
-            className={`text-sm font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
+            className={`text-sm 2xl:text-base font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
               isActive('/compare') ? 'text-forest-900 border-b-2 border-forest-800 pb-1' : 'text-warm-charcoal/80 hover:text-forest-800'
             }`}
           >
@@ -95,7 +95,7 @@ export const Navbar: React.FC = () => {
           {/* 6. STUDENT EXPERIENCES */}
           <Link
             to="/experiences"
-            className={`text-sm font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
+            className={`text-sm 2xl:text-base font-extrabold tracking-wide transition-colors uppercase whitespace-nowrap ${
               isActive('/experiences') ? 'text-forest-900 border-b-2 border-forest-800 pb-1' : 'text-warm-charcoal/80 hover:text-forest-800'
             }`}
           >
@@ -105,7 +105,7 @@ export const Navbar: React.FC = () => {
           {/* 7. ABOUT */}
           <button
             onClick={() => scrollToSection('about')}
-            className="text-sm font-extrabold tracking-wide text-warm-charcoal/80 hover:text-forest-800 transition-colors uppercase whitespace-nowrap cursor-pointer"
+            className="text-sm 2xl:text-base font-extrabold tracking-wide text-warm-charcoal/80 hover:text-forest-800 transition-colors uppercase whitespace-nowrap cursor-pointer"
           >
             About
           </button>
@@ -117,7 +117,7 @@ export const Navbar: React.FC = () => {
             <div className="flex items-center gap-3">
               <Link
                 to="/dashboard"
-                className={`h-11 px-5 rounded-xl text-xs font-extrabold border flex items-center gap-2 transition-all whitespace-nowrap shadow-soft-sm ${
+                className={`h-11 sm:h-12 px-5 sm:px-6 rounded-xl text-xs sm:text-sm font-extrabold border flex items-center gap-2 transition-all whitespace-nowrap shadow-soft-sm ${
                   isActive('/dashboard')
                     ? 'bg-forest-900 text-white border-forest-900'
                     : 'bg-forest-50 hover:bg-forest-100 text-forest-900 border-forest-200'
@@ -131,7 +131,7 @@ export const Navbar: React.FC = () => {
                   logout();
                   navigate('/');
                 }}
-                className="h-11 px-4 flex items-center gap-1.5 rounded-xl bg-warm-cream/70 hover:bg-terracotta-light text-warm-charcoal hover:text-terracotta border border-warm-border text-xs font-extrabold transition-colors cursor-pointer"
+                className="h-11 sm:h-12 px-4 sm:px-5 flex items-center gap-2 rounded-xl bg-warm-cream/70 hover:bg-terracotta-light text-warm-charcoal hover:text-terracotta border border-warm-border text-xs sm:text-sm font-extrabold transition-colors cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut className="w-4 h-4" />
@@ -142,13 +142,13 @@ export const Navbar: React.FC = () => {
             <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="h-11 px-5 flex items-center text-xs font-extrabold text-forest-900 hover:text-forest-700 transition-colors whitespace-nowrap"
+                className="h-11 sm:h-12 px-5 sm:px-6 flex items-center text-xs sm:text-sm font-extrabold text-forest-900 hover:text-forest-700 transition-colors whitespace-nowrap"
               >
                 Sign In
               </Link>
               <Link
                 to="/register"
-                className="h-11 px-6 rounded-xl bg-white hover:bg-warm-bg text-forest-900 font-extrabold text-xs border border-warm-border shadow-soft-sm transition-all flex items-center whitespace-nowrap hover:shadow-soft-md transform hover:-translate-y-0.5"
+                className="h-11 sm:h-12 px-6 sm:px-7 rounded-xl bg-white hover:bg-warm-bg text-forest-900 font-extrabold text-xs sm:text-sm border border-warm-border shadow-soft-sm transition-all flex items-center whitespace-nowrap hover:shadow-soft-md transform hover:-translate-y-0.5"
               >
                 Create Account
               </Link>
