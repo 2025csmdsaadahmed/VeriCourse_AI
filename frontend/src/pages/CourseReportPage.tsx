@@ -279,31 +279,75 @@ export const CourseReportPage: React.FC = () => {
                         Corroborating Evidence ({evidenceList.length} Source{evidenceList.length > 1 ? 's' : ''}):
                       </span>
 
-                      {evidenceList.map((ev) => (
-                        <div key={ev.id} className="p-3.5 rounded-xl bg-white border border-warm-border text-xs space-y-1">
-                          <div className="flex items-center justify-between">
-                            <span className="font-bold text-forest-900">{ev.source_name}</span>
-                            <span className="text-[10px] text-warm-muted font-mono">
-                              Credibility: {ev.source_credibility || 'Unknown'}
-                            </span>
+                      {evidenceList.map((ev) => {
+                        // Extract hostname/domain for real website favicon
+                        let domain = 'education-standards.org';
+                        try {
+                          if (ev.source_url && ev.source_url.startsWith('http')) {
+                            domain = new URL(ev.source_url).hostname.replace('www.', '');
+                          } else if (ev.source_name.toLowerCase().includes('ftc')) {
+                            domain = 'ftc.gov';
+                          } else if (ev.source_name.toLowerCase().includes('cirr')) {
+                            domain = 'cirr.org';
+                          } else if (ev.source_name.toLowerCase().includes('anthropic')) {
+                            domain = 'anthropic.com';
+                          } else if (ev.source_name.toLowerCase().includes('iso')) {
+                            domain = 'iso.org';
+                          } else if (ev.source_name.toLowerCase().includes('bls')) {
+                            domain = 'bls.gov';
+                          }
+                        } catch {
+                          domain = 'education-standards.org';
+                        }
+
+                        return (
+                          <div key={ev.id} className="p-4 rounded-xl bg-white border border-warm-border text-xs space-y-2 shadow-2xs">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className="w-6 h-6 rounded-md bg-warm-bg border border-warm-border flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+                                  <img
+                                    src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+                                    alt={ev.source_name}
+                                    className="w-4 h-4 object-contain"
+                                    onError={(e) => {
+                                      (e.target as HTMLElement).style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                                <span className="font-bold text-forest-900 text-xs sm:text-sm truncate">
+                                  {ev.source_name}
+                                </span>
+                              </div>
+                              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-forest-50 border border-forest-200 text-forest-800 font-mono font-bold shrink-0">
+                                Credibility: {ev.source_credibility || 'Unknown'}
+                              </span>
+                            </div>
+
+                            {ev.source_url && (
+                              <a
+                                href={ev.source_url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-forest-700 font-semibold hover:underline flex items-center gap-1.5 text-[11px] truncate max-w-lg pl-8.5"
+                              >
+                                <span className="truncate">{ev.source_url}</span> <ExternalLink className="w-3 h-3 shrink-0" />
+                              </a>
+                            )}
+
+                            {ev.verification_explanation && (
+                              <p className="text-warm-charcoal/90 text-xs leading-relaxed pl-8.5 pt-0.5">
+                                {ev.verification_explanation}
+                              </p>
+                            )}
+
+                            {ev.verification_limitations && (
+                              <p className="text-warm-muted italic text-[11px] pl-8.5">
+                                Limitation: {ev.verification_limitations}
+                              </p>
+                            )}
                           </div>
-                          {ev.source_url && (
-                            <a
-                              href={ev.source_url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-forest-700 font-semibold hover:underline flex items-center gap-1 text-[11px] truncate max-w-md"
-                            >
-                              {ev.source_url} <ExternalLink className="w-3 h-3 shrink-0" />
-                            </a>
-                          )}
-                          {ev.verification_explanation && (
-                            <p className="text-warm-charcoal text-[11px] leading-relaxed pt-1">
-                              {ev.verification_explanation}
-                            </p>
-                          )}
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <p className="text-[11px] text-warm-muted italic pt-2 border-t border-warm-border/60">
