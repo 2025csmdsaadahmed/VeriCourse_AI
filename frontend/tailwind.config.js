@@ -54,8 +54,14 @@ export default {
         'soft-lg': '0 16px 40px -8px rgba(37, 43, 41, 0.12)',
         'forest-sm': '0 4px 20px -2px rgba(23, 76, 60, 0.18)',
         'terracotta-sm': '0 4px 20px -2px rgba(200, 117, 82, 0.22)',
+      },
+      spacing: {
+        '11': '2.75rem',  // 44px
+        '12': '3rem',     // 48px
+        '13': '3.25rem',  // 52px
+        '14': '3.5rem',   // 56px
       }
     },
   },
   plugins: [],
-}
+};
