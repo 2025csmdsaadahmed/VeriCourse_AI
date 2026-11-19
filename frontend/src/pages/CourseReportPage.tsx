@@ -1,3 +1,4 @@
+// Displays course verification results alongside claims and supporting evidence.
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';

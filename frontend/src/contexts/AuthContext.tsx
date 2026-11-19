@@ -1,3 +1,4 @@
+// Shares the current user, session token, and login and logout actions across pages.
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../types';
 import { api } from '../services/api';

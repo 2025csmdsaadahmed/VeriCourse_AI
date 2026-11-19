@@ -1,3 +1,4 @@
+// Collects course details and supporting evidence for verification.
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
